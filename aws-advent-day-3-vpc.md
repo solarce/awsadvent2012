@@ -87,7 +87,7 @@ As with any product, VPC comes with some limitations. These include:
 [Further Reading](http://aws.amazon.com/vpc/faqs/#Q2)
 
 Cost
---------=
+--------
 
 Your VPC(s) do not cost anything to create or run. Additionally, subnets, security groups, and network ACLs are also free.
 
@@ -98,7 +98,7 @@ All other AWS services cost the same whether you run those instances inside a VP
 [Further Reading](http://aws.amazon.com/vpc/faqs/#B1)
 
 Summary
---------=
+--------
 
 
 In summary, VPCs provide an easy way to isolate application infrastructure, while still using a variety of AWS resources. With a little additional configuration, you're able to take advantage of the VPC service.
