@@ -87,7 +87,7 @@ There are a number of things to consider when using RDS instances, both in terms
 
 __Sizing__
 
-Since RDS instances are easily resizable and include CloudWatch metrics, it is relatively simple to start with a smaller instance class and amount of storage, and grow as needed. If possible, I recommend doing some benchmarking with what you think would be a good starting point and verify if the class and storage you've chosen does meet your needs.
+Since RDS instances are easily re-sizable and include CloudWatch metrics, it is relatively simple to start with a smaller instance class and amount of storage, and grow as needed. If possible, I recommend doing some benchmarking with what you think would be a good starting point and verify if the class and storage you've chosen does meet your needs.
 
 I would also recommend that you choose to start with using Provisioned IOPS and a Multi-AZ setup. While this is more expensive, you're guaranteeing a level of performance and reliability from the get-go, and will help mitigate some of the things below that can affect your RDS instances.
 
