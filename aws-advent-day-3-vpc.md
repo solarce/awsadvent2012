@@ -1,10 +1,10 @@
 Amazon Virtual Private Cloud
-============================
+----------------------------
 
 Amazon Virtual Private Cloud (VPC) is a service which allows you to create an isolated, private network within an AWS region where you can run and use a variety of other AWS resources. You're able to create a variety of private IP space subnets and build routes and security policies between them to fully host a multi-tier application within AWS while maintaining isolation from other AWS customers.
 
 How do I build a VPC?
-=====================
+--------------------=
 
 A [VPC](http://aws.amazon.com/vpc/faqs/) is built from a number of parts
 
@@ -26,7 +26,7 @@ VPC supports four options for its network architecture.
 [Further Reading](http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide/GetStarted.html)
 
 AWS services you can use inside a VPC
-=====================================
+------------------------------------=
 
 A number of AWS services provide you with instance based resources, and you're able to run those resources inside your VPC. These include
 
@@ -60,7 +60,7 @@ You're able to use Auto Scaling to scale EC2 instances inside your VPC, in conju
 [Further Reading](http://docs.amazonwebservices.com/AmazonVPC/latest/UserGuide/VPC_AutoScaling.html)
 
 Networking inside your VPC
-==========================
+--------------------------
 
 Your VPC is divided into a set of subnets. You control traffic between subnets and to the Internet with two necessary things and one optional. 
 
@@ -75,7 +75,7 @@ Optionally, you can use [Network ACLs](http://docs.amazonwebservices.com/AmazonV
 [Further Reading](http://docs.amazonwebservices.com/AmazonVPC/latest/UserGuide/VPC_Security.html#VPC_Security_Comparison)
 
 Some limitations of using VPCs
-==============================
+------------------------------
 
 As with any product, VPC comes with some limitations. These include:
 
@@ -87,7 +87,7 @@ As with any product, VPC comes with some limitations. These include:
 [Further Reading](http://aws.amazon.com/vpc/faqs/#Q2)
 
 Cost
-=========
+--------=
 
 Your VPC(s) do not cost anything to create or run. Additionally, subnets, security groups, and network ACLs are also free.
 
@@ -98,7 +98,7 @@ All other AWS services cost the same whether you run those instances inside a VP
 [Further Reading](http://aws.amazon.com/vpc/faqs/#B1)
 
 Summary
-=========
+--------=
 
 
 In summary, VPCs provide an easy way to isolate application infrastructure, while still using a variety of AWS resources. With a little additional configuration, you're able to take advantage of the VPC service.
