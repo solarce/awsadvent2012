@@ -4,7 +4,7 @@ Amazon Virtual Private Cloud
 Amazon Virtual Private Cloud (VPC) is a service which allows you to create an isolated, private network within an AWS region where you can run and use a variety of other AWS resources. You're able to create a variety of private IP space subnets and build routes and security policies between them to fully host a multi-tier application within AWS while maintaining isolation from other AWS customers.
 
 How do I build a VPC?
---------------------=
+---------------------
 
 A [VPC](http://aws.amazon.com/vpc/faqs/) is built from a number of parts
 
@@ -26,7 +26,7 @@ VPC supports four options for its network architecture.
 [Further Reading](http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide/GetStarted.html)
 
 AWS services you can use inside a VPC
-------------------------------------=
+-------------------------------------
 
 A number of AWS services provide you with instance based resources, and you're able to run those resources inside your VPC. These include
 
