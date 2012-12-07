@@ -7,10 +7,8 @@
     "Ec2Instance" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "InstanceType" : "ami-16fd7026"
+        "ImageId" : "ami-16fd7026"
       }
     }
   }
-
-
 }

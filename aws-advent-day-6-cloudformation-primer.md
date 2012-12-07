@@ -46,20 +46,6 @@ A most basic template only needs what is show below
 
 _basic.template_
 <code>
-{
-  "AWSTemplateFormatVersion" : "2010-09-09",
-
-  "Description" : "basic template"
-
-  "Resources" : {
-    "Ec2Instance" : {
-      "Type" : "m1.small",
-      "Properties" : {
-        "ImageId" : "ami-16fd7026",
-      }
-    }
-  }
-}
 </code>
 
 A template can contain _Parameters_ for user input. An example of this would be a parameter for the instance type. 
@@ -68,117 +54,18 @@ As you'll see in the example below, you refer to paramaters or other _values_ us
 
 _basic-paramater.template_
 <code>
-{
-  "AWSTemplateFormatVersion" : "2010-09-09",
-
-  "Description" : "basic template with instance parameter",
-
-  "Parameters" : {
-    "InstanceTypeInput" : {
-      "Description" : "EC2 instance type",
-      "Type" : "String"
-    }
-  },
-
-  "Resources" : {
-    "Ec2Instance" : {
-      "Type" : "AWS::EC2::Instance",
-      "Properties" : {
-        "InstanceType" : { "Ref" : "InstanceTypeInput"},
-        "ImageId" : "ami-16fd7026"
-      }
-    }
-  }
-}
 </code>
 
 Sometimes _Mappings_ are a better option than _Parameters_, a common pattern you'll see in CFN templates is using a Mapping for the AMI ids in various AWS rgions, as shown below
 
 _basic-mapping.template_
 <code>
-{
-  "AWSTemplateFormatVersion" : "2010-09-09",
-
-  "Description" : "basic template with AMI id mapping",
-
-  "Parameters" : {
-    "InstanceTypeInput" : {
-      "Description" : "EC2 instance type",
-      "Type" : "String"
-    }
-  },
-
-  "Mappings" : {
-    "RegionMap" : {
-      "us-east-1"      : { "AMI" : "ami-7f418316" },
-      "us-west-1"      : { "AMI" : "ami-951945d0" },
-      "us-west-2"      : { "AMI" : "ami-16fd7026" },
-      "eu-west-1"      : { "AMI" : "ami-24506250" },
-      "sa-east-1"      : { "AMI" : "ami-3e3be423" },
-      "ap-southeast-1" : { "AMI" : "ami-74dda626" },
-      "ap-northeast-1" : { "AMI" : "ami-dcfa4edd" }
-    }
-  },
-
-
-  "Resources" : {
-    "Ec2Instance" : {
-      "Type" : "AWS::EC2::Instance",
-      "Properties" : {
-        "InstanceType" : { "Ref" : "InstanceTypeInput"},
-        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]}
-      }
-    }
-  }
-}
 </code>
 
 Finally, you're usually going to want to use one or more _Outputs_ in your template to provide you with information about the resources the creation of stack made.
 
 _basic-output.template_
 <code>
-{
-  "AWSTemplateFormatVersion" : "2010-09-09",
-
-  "Description" : "basic template with instance id output",
-
-  "Parameters" : {
-    "InstanceTypeInput" : {
-      "Description" : "EC2 instance type",
-      "Type" : "String"
-    }
-  },
-
-  "Mappings" : {
-    "RegionMap" : {
-      "us-east-1"      : { "AMI" : "ami-7f418316" },
-      "us-west-1"      : { "AMI" : "ami-951945d0" },
-      "us-west-2"      : { "AMI" : "ami-16fd7026" },
-      "eu-west-1"      : { "AMI" : "ami-24506250" },
-      "sa-east-1"      : { "AMI" : "ami-3e3be423" },
-      "ap-southeast-1" : { "AMI" : "ami-74dda626" },
-      "ap-northeast-1" : { "AMI" : "ami-dcfa4edd" }
-    }
-  },
-
-
-  "Resources" : {
-    "Ec2Instance" : {
-      "Type" : "AWS::EC2::Instance",
-      "Properties" : {
-        "InstanceType" : { "Ref" : "InstanceTypeInput"},
-        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]}
-      }
-    }
-  },
-
-  "Outputs" : {
-    "InstanceId" : {
-      "Description" : "InstanceId of the newly created EC2 instance",
-      "Value" : { "Ref" : "Ec2Instance" }
-    }
-  }
-}
 </code>
 
 Once you've created a template, you'll want to validate that it works with the _cfn-validate-template_ command from the CLI tools.
@@ -189,9 +76,55 @@ An example of using it with a local file is shown below
 
 `PARAMETERS  InstanceTypeInput  false  EC2 instance type`
 
-After you've verified the template is valid
+After you've verified the template is valid, you can try creating it using the _cfn-create-stack_ command. The you give the command a _stackname_ and a file or URL for the template you want to use. The command will return some info, including the new stack id 
+
+Note:__Running this command with a template will create AWS resources, that you will be billed for if they exceed your free tier__
+
+An example of creating a stack is shown below
+
+`cfn-create-stack basic-test-1 --template-file basic.template`
+
+`arn:aws:cloudformation:us-west-2:740810067088:stack/basic-test-1/bae25430-4037-11e2-ac91-50698256405b`
+
+You can check the progress of the stack creation with the _cfn-describe-stack-events_, which you give the _stackname_.
+
+An example of a stack creation in progress
+
+`cfn-describe-stack-events basic-test-1`
+
+`STACK_EVENT  basic-test-1  Ec2Instance   AWS::EC2::Instance          2012-12-07T06:35:42Z  CREATE_IN_PROGRESS`
+
+`STACK_EVENT  basic-test-1  basic-test-1  AWS::CloudFormation::Stack  2012-12-07T06:35:37Z  CREATE_IN_PROGRESS  User Initiated`
+
+An example of the stack creation finished
+
+`cfn-describe-stack-events basic-test-1`
+
+`STACK_EVENT  basic-test-1  basic-test-1  AWS::CloudFormation::Stack  2012-12-07T06:36:24Z  CREATE_COMPLETE`
+
+`STACK_EVENT  basic-test-1  Ec2Instance   AWS::EC2::Instance          2012-12-07T06:36:24Z  CREATE_COMPLETE`    
+
+`STACK_EVENT  basic-test-1  Ec2Instance   AWS::EC2::Instance          2012-12-07T06:35:42Z  CREATE_IN_PROGRESS`  
+
+`STACK_EVENT  basic-test-1  basic-test-1  AWS::CloudFormation::Stack  2012-12-07T06:35:37Z  CREATE_IN_PROGRESS  User Initiated`
+
+To delete the stack, you use the _cfn_delete_stack_ command and give it the _stackname_. An example run is shown below.
+
+`cfn-delete-stack basic-test-1`
+
+`Warning: Deleting a stack will lead to deallocation of all of the stack's resources. Are you sure you want to delete this stack? [Ny]y`
+
+At this point we've covered writing some basic templates and how to get started using a template with the CLI tools.
 
 Where to go from here
 ---------------------
 
-Amazon has provided a wide variety of templates in the [Sample Templates library](http://aws.amazon.com/cloudformation/aws-cloudformation-templates/), ranging from [single EC2 instances](), to [Drupal]() or [Redmine]() application stacks, and even a full blown [multi-tier application in a VPC](), which you're able to download and run.
+To start you should read the [Learn Template Basics](http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html) and [Working with Templates](http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/template-guide.html) documentation.
+
+While writing and exploring templates, I highly recommend getting familiar with the [Template Reference](http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/template-reference.html) which has detailed docs on the various Template types, their properties, return values, etc.
+
+Finally, Amazon has provided a wide variety of templates in the [Sample Templates library](http://aws.amazon.com/cloudformation/aws-cloudformation-templates/), ranging from [single EC2 instances](https://s3.amazonaws.com/cloudformation-templates-us-east-1/EC2InstanceSample.template), to [Drupal](https://s3.amazonaws.com/cloudformation-templates-us-east-1/Drupal_Single_Instance_With_RDS.template) or [Redmine](https://s3.amazonaws.com/cloudformation-templates-us-east-1/Redmine_Single_Instance_With_RDS.template) application stacks, and even a full blown [multi-tier application in a VPC](https://s3.amazonaws.com/cloudformation-templates-us-east-1/multi-tier-web-app-in-vpc.template), which you're able to download and run.
+
+I've put the samples from this article in the [Github repository](https://github.com/solarce/awsadvent2012) as well.
+
+I hope you've found this post helpful in getting started with CloudFormation.
