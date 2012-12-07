@@ -1,0 +1,22 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "basic template with instance parameter",
+
+  "Parameters" : {
+    "InstanceTypeInput" : {
+      "Description" : "EC2 instance type",
+      "Type" : "String"
+    }
+  },
+
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "InstanceType" : { "Ref" : "InstanceTypeInput"},
+        "ImageId" : "ami-16fd7026"
+      }
+    }
+  }
+}

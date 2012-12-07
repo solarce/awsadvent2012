@@ -44,6 +44,7 @@ A template begins with the _AWSTemplateFormatVersion_ and a _Description_, and m
 
 A most basic template only needs what is show below
 
+_basic.template_
 <code>
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
@@ -65,24 +66,26 @@ A template can contain _Parameters_ for user input. An example of this would be 
 
 As you'll see in the example below, you refer to paramaters or other _values_ using a special function, called _Ref_.
 
-
+_basic-paramater.template_
 <code>
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "basic template with instance parameter"
+  "Description" : "basic template with instance parameter",
 
   "Parameters" : {
-    "InstanceType" : {
-    "Description" : "EC2 instance type",
-    "Type" : "String",
+    "InstanceTypeInput" : {
+      "Description" : "EC2 instance type",
+      "Type" : "String"
+    }
   },
 
   "Resources" : {
     "Ec2Instance" : {
-      "Type" : { "Ref" : "InstanceType"}
+      "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "ImageId" : "ami-16fd7026",
+        "InstanceType" : { "Ref" : "InstanceTypeInput"},
+        "ImageId" : "ami-16fd7026"
       }
     }
   }
@@ -91,16 +94,18 @@ As you'll see in the example below, you refer to paramaters or other _values_ us
 
 Sometimes _Mappings_ are a better option than _Parameters_, a common pattern you'll see in CFN templates is using a Mapping for the AMI ids in various AWS rgions, as shown below
 
+_basic-mapping.template_
 <code>
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "basic template with instance parameter"
+  "Description" : "basic template with AMI id mapping",
 
   "Parameters" : {
-    "InstanceType" : {
-    "Description" : "EC2 instance type",
-    "Type" : "String",
+    "InstanceTypeInput" : {
+      "Description" : "EC2 instance type",
+      "Type" : "String"
+    }
   },
 
   "Mappings" : {
@@ -118,15 +123,73 @@ Sometimes _Mappings_ are a better option than _Parameters_, a common pattern you
 
   "Resources" : {
     "Ec2Instance" : {
-      "Type" : { "Ref" : "InstanceType"}
+      "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
+        "InstanceType" : { "Ref" : "InstanceTypeInput"},
+        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]}
       }
     }
   }
 }
 </code>
 
+Finally, you're usually going to want to use one or more _Outputs_ in your template to provide you with information about the resources the creation of stack made.
+
+_basic-output.template_
+<code>
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "basic template with instance id output",
+
+  "Parameters" : {
+    "InstanceTypeInput" : {
+      "Description" : "EC2 instance type",
+      "Type" : "String"
+    }
+  },
+
+  "Mappings" : {
+    "RegionMap" : {
+      "us-east-1"      : { "AMI" : "ami-7f418316" },
+      "us-west-1"      : { "AMI" : "ami-951945d0" },
+      "us-west-2"      : { "AMI" : "ami-16fd7026" },
+      "eu-west-1"      : { "AMI" : "ami-24506250" },
+      "sa-east-1"      : { "AMI" : "ami-3e3be423" },
+      "ap-southeast-1" : { "AMI" : "ami-74dda626" },
+      "ap-northeast-1" : { "AMI" : "ami-dcfa4edd" }
+    }
+  },
+
+
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "InstanceType" : { "Ref" : "InstanceTypeInput"},
+        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]}
+      }
+    }
+  },
+
+  "Outputs" : {
+    "InstanceId" : {
+      "Description" : "InstanceId of the newly created EC2 instance",
+      "Value" : { "Ref" : "Ec2Instance" }
+    }
+  }
+}
+</code>
+
+Once you've created a template, you'll want to validate that it works with the _cfn-validate-template_ command from the CLI tools.
+
+An example of using it with a local file is shown below
+
+`cfn-validate-template --template-file basic-output.template`
+
+`PARAMETERS  InstanceTypeInput  false  EC2 instance type`
+
+After you've verified the template is valid
 
 Where to go from here
 ---------------------

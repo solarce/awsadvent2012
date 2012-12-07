@@ -1,0 +1,16 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "basic template",
+
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "InstanceType" : "ami-16fd7026"
+      }
+    }
+  }
+
+
+}
