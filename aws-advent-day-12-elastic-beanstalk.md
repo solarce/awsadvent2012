@@ -118,7 +118,7 @@ __Manual Deploy__
 Let's do a manual update of the application through the console
 
 1. Since we're using Python as our example framework, I am using the [python sample](https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/python-secondsample.zip) from the [Getting Started](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/GettingStarted.Walkthrough.html) walk through
-2. Login to the [EB console]([AWS console](https://console.aws.amazon.com/elasticbeanstalk/)
+2. Login to the [EB console](https://console.aws.amazon.com/elasticbeanstalk/)
 3. Click on the Versions tab
 4. Click Upload New Version
 5. Enter Second Version for the Version Label
