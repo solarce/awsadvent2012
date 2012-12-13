@@ -1,9 +1,11 @@
 Amazon Elastic Beanstalk
 ------------------------
 
-[Elastic Beanstalk (EB)]() is ...
+[Elastic Beanstalk (EB)](http://aws.amazon.com/elasticbeanstalk/faqs/#what-is) is a service which helps you easily manage and deploy your application code into an automated application environment. It handles provisioning AWS resources like EC2 instances, ELB instances, and RDS databases, and let's you focus on writing your code and deploying with a `git push` style deployment when you're ready to deploy to development, staging, or production environments.
 
-[Further Reading]()
+[What does Elastic Beanstalk offer me? FAQ](http://aws.amazon.com/elasticbeanstalk/faqs/#can-do)
+[Getting Started Walkthrough](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/GettingStarted.Walkthrough.html)
+[What Is AWS Elastic Beanstalk and Why Do I Need It?](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/Welcome.html)
 
 Pricing
 -------
@@ -13,6 +15,77 @@ AWS Elastic Beanstalk is free, but the AWS resources that AWS Elastic Beanstalk 
 The total charges for the activity we'll do during this blog post will be minimal (typically less than a dollar). It is possible to do some testing of EB in [Free tier](http://aws.amazon.com/free/) by following [this guide](http://docs.amazonwebservices.com/gettingstarted/latest/awsgsg-freetier/deploy-sample-app.html).
 
 [Further Reading on Pricing](http://aws.amazon.com/pricing/elasticbeanstalk/)
+
+Key Concepts
+------------
+
+The key concepts when trying to understand and use Elastic Beanstalk are
+
+* Application
+* Environment
+* Version
+* Environment Configuration
+* Configuration Template
+
+The primary AWS services that Elastic Beanstalk can/will use are
+
+* Amazon Elastic Compute Cloud (Amazon EC2)
+* Amazon Relational Database Service (Amazon RDS)
+* Amazon Simple Storage Service (Amazon S3)
+* Amazon Simple Notification Service (Amazon SNS)
+* Amazon CloudWatch
+* Elastic Load Balancing
+* Auto Scaling
+
+It's important to understand what each of the main components in Elastic Beanstalk, so let's explore them in a little more depth.
+
+__Application__
+
+An AWS Elastic Beanstalk application is a logical collection of AWS Elastic Beanstalk components, including environments, versions, and environment configurations. In AWS Elastic Beanstalk an application is conceptually similar to a folder.
+
+__Version__
+
+In AWS Elastic Beanstalk, a version refers to a specific, labeled iteration of deployable code. A version points to an Amazon Simple Storage Service (Amazon S3) object that contains the deployable code (e.g., a Java WAR file). A version is part of an application. Applications can have many versions.
+
+__Environment__
+
+An environment is a version that is deployed onto AWS resources. Each environment runs only a single version, however you can run the same version or different versions in many environments at the same time. When you create an environment, AWS Elastic Beanstalk provisions the resources needed to run the application version you specified. For more information about the environment and the resources that are created, see Architectural Overview.
+
+__Environment Configuration__
+
+An environment configuration identifies a collection of parameters and settings that define how an environment and its associated resources behave. When you update an environment’s configuration settings, AWS Elastic Beanstalk automatically applies the changes to existing resources or deletes and deploys new resources (depending on the type of change).
+
+__Configuration Template__
+
+A configuration template is a starting point for creating unique environment configurations. Configuration templates can be created or modified only by using the AWS Elastic Beanstalk command line utilities or APIs.
+
+__Further Reading__
+
+* [Architectural Overview](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/concepts.concepts.architecture.html)
+* [Design Considerations](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/concepts.concepts.design.html)
+* [Architecting for the Cloud: Best Practices](http://media.amazonwebservices.com/AWS_Cloud_Best_Practices.pdf)
+
+Workflow
+--------
+
+The typical workflow for using Elastic Beanstalk is that you'll create one or more _environments_ for a given _application_. Commonly development, staging, and production environments are created.
+
+As you're ready to deploy new _versions_ of your _application_ to a given _environment_, you'll upload a new _version_ and _deploy_ it to that _environment_ via the AWS console, the CLI tools, an IDE, or the an EB API library.
+
+* [Deploying PHP using the CLI and Git](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_PHP_eb.sdlc.html)
+* [Deploy .NET Using AWS Toolkit for Visual Studio](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_NET.html)
+* [Deploy Java Using AWS Toolkit for Eclipse](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_Java.html)
+
+Supported Languages
+-------------------
+
+Elastic Beanstalk currently supports the following languages:
+
+* [Java](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_Java.sdlc.html)
+* [.NET](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_NET.quickstart.html)
+* [PHP](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_PHP_eb.sdlc.html)
+* [Python](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_Python_django.html)
+* [Ruby](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_Ruby_rails.html)
 
 Getting Started
 ---------------
@@ -30,14 +103,14 @@ To get started with Elastic Beanstalk, we'll be using the [AWS console](https://
 
 At this point we have a deployed EB managed application environment.
 
-[Further Reading]()
+[Further Reading](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/GettingStarted.html)
 
 Deploying an application
 ------------------------
 
 There are two ways to deploy applications to your EB environments
 
-1. Manually through the [AWS console]()
+1. Manually through the [AWS console](https://console.aws.amazon.com/elasticbeanstalk/)
 2. Using the [AWS DevTools](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/create_deploy_PHP.html), in conjunction with [Git](http://git-scm.com/) or an IDE like Visual Studio or Eclipse.
 
 __Manual Deploy__
@@ -146,12 +219,16 @@ You're able to customize a number of things, including
 
 [Further Readingon Application Container Customization](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/customize-containers.html)
 
-Scaling an application
-----------------------
-
-[Further Reading]()
-
 Where to go from here
 ---------------------
 
-[Further Reading]()
+Now that you're used Elastic Beanstalk, seen how to deploy code, learned how to customized your instances, you may be considering running your own application with Elastic Beanstalk.
+
+Some of the things you'll want to look into further if you want to deploy your application to EB are:
+
+* [Configuring HTTPS](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/configuring-https.html)
+* [Using your own DNS names (Custom DNS)](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/customdomains.html)
+* [Using CloudFront with EB](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/AWSHowTo.cloudfront.html)
+* [Using ElasticCache with EB](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/AWSHowTo.ElastiCache.html)
+* [Using VPC with EB](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/AWSHowTo-vpc-requirements.html)
+* [How can I use IAM with EB](http://docs.amazonwebservices.com/elasticbeanstalk/latest/dg/AWSHowTo.iam.html)
